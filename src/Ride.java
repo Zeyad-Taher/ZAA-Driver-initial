@@ -30,6 +30,6 @@ public class Ride implements Subject{
 
     @Override
     public void notifyObservers() {
-        user.update();
+        user.update(null);
     }
 }

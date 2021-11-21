@@ -27,7 +27,7 @@ public class UserAccount extends Account implements Observer{
     }
 
     @Override
-    public void update() {
+    public void update(Object o) {
 
     }
 
@@ -38,6 +38,7 @@ public class UserAccount extends Account implements Observer{
         Area dokki = new Area("Dokki");
         driver.addFavArea(haram);
         Ride userRide = user.requestRide(haram, dokki);
+        System.out.println(haram);
 //        driver.makeOffer(10, userRide);
     }
 }

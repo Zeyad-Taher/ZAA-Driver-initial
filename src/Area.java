@@ -22,12 +22,16 @@ public class Area implements Subject {
     @Override
     public void notifyObservers() {
         for(Observer observer : observers){
-            observer.update();
+            observer.update(this);
         }
     }
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

@@ -33,7 +33,7 @@ public class DriverAccount extends Account implements Observer{
     }
 
     @Override
-    public void update() {
-        System.out.println("New ride to one of ur favs");
+    public void update(Object area) {
+        System.out.println("New ride to one of ur favs: " + (Area) area);
     }
 }
