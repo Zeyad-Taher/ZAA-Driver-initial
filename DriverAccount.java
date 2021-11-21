@@ -20,7 +20,7 @@ public class DriverAccount extends Account {
         Database system=getSystem();
         driverAppWriter=system.getDriverAppWriter();
         driverAppWriter.write(getUsername()+" "+getPassword()+" "+getMobilePhone()+" "+getEmail()+" "+getNationalID()+" "+getDrivingLicense()+" "+getActive()+"\n");
-        driverAppWriter.close();
+        driverAppWriter.flush();
     }
     
     public void setNationalID(String nationalID){

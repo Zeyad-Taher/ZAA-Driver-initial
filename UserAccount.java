@@ -13,9 +13,8 @@ public class UserAccount extends Account {
         setEmail(email);
         setActive(true);
         setType(this);
-        Database system=getSystem();
-        userWriter=system.getUserCredentialsWriter();
+        userWriter=getSystem().getUserCredentialsWriter();
         userWriter.write(getUsername()+" "+getPassword()+" "+getMobilePhone()+" "+getEmail()+" "+getActive()+"\n");
-        userWriter.close();
+        userWriter.flush();
     }
 }

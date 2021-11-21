@@ -18,7 +18,7 @@ public class Admin {
         setSystem();
         system=getSystem();
         adminWriter=system.getAdminCredentialsWriter();
-        adminWriter.write(getUsername()+" "+getPassword());
+        adminWriter.write(getUsername()+" "+getPassword()+"\n");
         adminWriter.close();
     }
     
@@ -40,10 +40,10 @@ public class Admin {
         File driverApplications=new File("D:\\Java\\ZAA\\src\\zaa\\Database\\DriverApplications.txt");
         Scanner myReader=new Scanner(driverApplications);
         while (myReader.hasNextLine()) {
-            pendingDrivers += myReader.nextLine();
+            pendingDrivers += myReader.nextLine()+"\n";
         }
         myReader.close();
-        System.out.print(pendingDrivers);
+        System.out.println(pendingDrivers);
     }
     
     public void verifyDriver(String username) throws FileNotFoundException, IOException{
@@ -63,6 +63,7 @@ public class Admin {
         }
         FileWriter myWriter=new FileWriter("D:\\Java\\ZAA\\src\\zaa\\Database\\DriverApplications.txt");
         myWriter.write(newPendingDrivers);
+        myWriter.close();
         myReader.close();
         FileWriter driverWriter=system.getDriverCredentialsWriter();
         driverWriter.write(activateDriver(verifiedDriver)+"\n");
