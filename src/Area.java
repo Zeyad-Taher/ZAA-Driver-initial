@@ -20,9 +20,9 @@ public class Area implements Subject {
     }
 
     @Override
-    public void notifyObservers() {
+    public void notifyObservers(Object o) {
         for(Observer observer : observers){
-            observer.update(this);
+            observer.update(o);
         }
     }
 
@@ -36,6 +36,6 @@ public class Area implements Subject {
 
     @Override
     public String toString() {
-        return "Area name: " + name;
+        return name;
     }
 }
