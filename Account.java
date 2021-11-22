@@ -67,4 +67,5 @@ public abstract class Account {
     public String getType(){
         return type;
     }
+    public abstract void saveAccount();
 }

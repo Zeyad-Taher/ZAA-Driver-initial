@@ -1,6 +1,6 @@
 package zaa;
 
 public interface Authentication {
-    public boolean login();
+    public Account login();
     public void register();
 }

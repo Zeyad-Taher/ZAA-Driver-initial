@@ -7,17 +7,19 @@ public class ZAA {
         
         user=new UserAuthentication();
         user.register();
-        if(user.login()){
+        UserAccount userAcc=(UserAccount) user.login();
+        if(userAcc!=null){
             System.out.println("You logged in successfully!");
+            System.out.println("Welcome "+userAcc.getUsername());
         }
         else{
             System.out.println("login failed");
         }
-        driver=new DriverAuthentication();
+        /*driver=new DriverAuthentication();
         driver.register();
         driver.login();
         admin=new AdminAuthentication();
         admin.register();
-        admin.login();
+        admin.login();*/
     }
 }
