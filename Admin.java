@@ -11,15 +11,35 @@ public class Admin {
     private String password;
     private Database system;
     private FileWriter adminWriter;
+    private File adminCredentials;
     
     public Admin(String username,String password) throws IOException{
         this.username=username;
         this.password=password;
-        setSystem();
-        system=getSystem();
-        adminWriter=system.getAdminCredentialsWriter();
-        adminWriter.write(getUsername()+" "+getPassword()+"\n");
-        adminWriter.close();
+        system=Database.getInstance();
+        adminCredentials=getSystem().getAdminCredentials();
+        Scanner read=new Scanner(adminCredentials);
+        String currentAdminLine="";
+        boolean found=false;
+        while (read.hasNextLine()){ //check if username is registered
+            currentAdminLine=read.nextLine();
+            String[] userInfo=currentAdminLine.split(" ");
+            if(userInfo[0].equals(username)){
+                found=true;
+                break;
+            }
+        }
+        if(!found){
+            setSystem();
+            system=getSystem();
+            adminWriter=system.getAdminCredentialsWriter();
+            adminWriter.write(getUsername()+" "+getPassword()+"\n");
+            adminWriter.flush();
+            System.out.println("Welcome "+getUsername());
+        }
+        else{
+            System.out.println("Username already registered");
+        }
     }
     
     public void setUsername(String username){
@@ -37,7 +57,7 @@ public class Admin {
     
     public void listPendingDrivers() throws FileNotFoundException{
         String pendingDrivers="";
-        File driverApplications=new File("D:\\Java\\ZAA\\src\\zaa\\Database\\DriverApplications.txt");
+        File driverApplications=getSystem().getDriverAppCredentials();
         Scanner myReader=new Scanner(driverApplications);
         while (myReader.hasNextLine()) {
             pendingDrivers += myReader.nextLine()+"\n";
@@ -49,7 +69,7 @@ public class Admin {
     public void verifyDriver(String username) throws FileNotFoundException, IOException{
         String newPendingDrivers="";
         String verifiedDriver="";
-        File driverApplications=new File("D:\\Java\\ZAA\\src\\zaa\\Database\\DriverApplications.txt");
+        File driverApplications=getSystem().getDriverAppCredentials();
         Scanner myReader=new Scanner(driverApplications);
         String driverLine="";
         while (myReader.hasNextLine()) {
@@ -61,7 +81,7 @@ public class Admin {
             }
             newPendingDrivers += driverLine+"\n";
         }
-        FileWriter myWriter=new FileWriter("D:\\Java\\ZAA\\src\\zaa\\Database\\DriverApplications.txt");
+        FileWriter myWriter=getSystem().getDriverAppWriter();
         myWriter.write(newPendingDrivers);
         myWriter.close();
         myReader.close();
@@ -72,7 +92,7 @@ public class Admin {
     
     public void suspendPerson(String username) throws FileNotFoundException, IOException{
         String suspended="";
-        File drivers=new File("D:\\Java\\ZAA\\src\\zaa\\Database\\DriverCredentials.txt"); // search in drivers
+        File drivers=getSystem().getDriverCredentials(); // search in drivers
         Scanner myReader=new Scanner(drivers);
         String newDrivers="";
         String driverLine="";
@@ -92,7 +112,7 @@ public class Admin {
             driverWriter.close();
         }
         else{ // search in users
-            File users=new File("D:\\Java\\ZAA\\src\\zaa\\Database\\UserCredentials.txt");
+            File users=getSystem().getUserCredentials();
             myReader=new Scanner(users);
             String newUsers="";
             String userLine="";

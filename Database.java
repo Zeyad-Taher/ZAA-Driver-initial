@@ -12,6 +12,10 @@ public class Database {
     
     private Database () throws IOException{
         File databaseFolder=new File("D:\\Java\\ZAA\\src\\zaa\\Database");
+        File dsersFolder=new File("D:\\Java\\ZAA\\src\\zaa\\Database\\Users");
+        dsersFolder.mkdir();
+        File driversFolder=new File("D:\\Java\\ZAA\\src\\zaa\\Database\\Drivers");
+        driversFolder.mkdir();
         if(!databaseFolder.exists()){
             databaseFolder.mkdir();
         }
@@ -36,15 +40,31 @@ public class Database {
         return userWriter;
     }
     
+    public File getUserCredentials(){
+        return userCredentials;
+    }
+    
     public FileWriter getDriverCredentialsWriter(){
         return driverWriter;
+    }
+    
+    public File getDriverCredentials(){
+        return driverCredentials;
     }
     
     public FileWriter getDriverAppWriter(){
         return driverAppWriter;
     }
     
+    public File getDriverAppCredentials(){
+        return driverApplications;
+    }
+    
     public FileWriter getAdminCredentialsWriter(){
         return adminWriter;
+    }
+    
+    public File getAdminCredentials(){
+        return adminCredentials;
     }
 }

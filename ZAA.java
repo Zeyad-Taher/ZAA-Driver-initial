@@ -1,75 +1,23 @@
 package zaa;
 import java.io.IOException;
-import java.util.Scanner;
 
 public class ZAA {
+    private static Authentication user,driver,admin;
     public static void main(String[] args) throws IOException {
-        Scanner read=new Scanner(System.in);
-        String username,password,mobilePhone,email,nationalID,drivingLicense;
-        /*System.out.println("Create User Account");
-        System.out.print("Username: ");
-        username=read.nextLine();
-        System.out.print("Password: ");
-        password=read.nextLine();
-        System.out.print("Mobile Phone: ");
-        mobilePhone=read.nextLine();
-        System.out.print("Email: ");
-        email=read.nextLine();
-        Account user1=new UserAccount(username,password,mobilePhone,email);
         
-        System.out.println("Create User Account");
-        System.out.print("Username: ");
-        username=read.nextLine();
-        System.out.print("Password: ");
-        password=read.nextLine();
-        System.out.print("Mobile Phone: ");
-        mobilePhone=read.nextLine();
-        System.out.print("Email: ");
-        email=read.nextLine();
-        Account user2=new UserAccount(username,password,mobilePhone,email);*/
-
-        System.out.println("Create Driver Account");
-        System.out.print("Username: ");
-        username=read.nextLine();
-        System.out.print("Password: ");
-        password=read.nextLine();
-        System.out.print("Mobile Phone: ");
-        mobilePhone=read.nextLine();
-        System.out.print("Email: ");
-        email=read.nextLine();
-        System.out.print("National ID: ");
-        nationalID=read.nextLine();
-        System.out.print("Driving License: ");
-        drivingLicense=read.nextLine();
-        Account driver1=new DriverAccount(username,password,mobilePhone,email,nationalID,drivingLicense);
-        
-        System.out.println("Create Driver Account");
-        System.out.print("Username: ");
-        username=read.nextLine();
-        System.out.print("Password: ");
-        password=read.nextLine();
-        System.out.print("Mobile Phone: ");
-        mobilePhone=read.nextLine();
-        System.out.print("Email: ");
-        email=read.nextLine();
-        System.out.print("National ID: ");
-        nationalID=read.nextLine();
-        System.out.print("Driving License: ");
-        drivingLicense=read.nextLine();
-        Account driver2=new DriverAccount(username,password,mobilePhone,email,nationalID,drivingLicense);
-        
-        System.out.println("Create Admin Account");
-        System.out.print("Username: ");
-        username=read.nextLine();
-        System.out.print("Password: ");
-        password=read.nextLine();
-        Admin admin=new Admin(username,password);
-        admin.listPendingDrivers();
-        System.out.print("Enter driver username to verify: ");
-        String verifiedDriver=read.nextLine();
-        admin.verifyDriver(verifiedDriver);
-        System.out.print("Enter Person username to suspend: ");
-        String suspendedPerson=read.nextLine();
-        admin.suspendPerson(suspendedPerson);
+        user=new UserAuthentication();
+        user.register();
+        if(user.login()){
+            System.out.println("You logged in successfully!");
+        }
+        else{
+            System.out.println("login failed");
+        }
+        driver=new DriverAuthentication();
+        driver.register();
+        driver.login();
+        admin=new AdminAuthentication();
+        admin.register();
+        admin.login();
     }
 }
