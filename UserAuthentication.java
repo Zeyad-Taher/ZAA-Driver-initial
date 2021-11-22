@@ -89,7 +89,7 @@ public class UserAuthentication implements Authentication{
             if(!found){
                 Account newUser=new UserAccount(username,password,mobilePhone,email);
                 newUser.saveAccount();
-                System.out.println("User acoount created successfully");
+                System.out.println("User account created successfully");
             }
             else{
                 System.out.println("Username already registerd");

@@ -8,7 +8,8 @@ import java.util.logging.Logger;
 
 public class UserAccount extends Account {
     private FileWriter userWriter;
-    public UserAccount(String username,String password,String mobilePhone,String email) {
+    public UserAccount(String username,String password,String mobilePhone,String email) throws IOException {
+        super();
         setUsername(username);
         setPassword(password);
         setMobilePhone(mobilePhone);

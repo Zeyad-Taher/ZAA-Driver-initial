@@ -2,6 +2,7 @@ package zaa;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -10,6 +11,8 @@ import java.util.logging.Logger;
 public class DriverAuthentication implements Authentication{
 
     private Database system;
+    private Account driver;
+    private File driverCredentials;
 
     public DriverAuthentication() throws IOException {
         system=Database.getInstance();
@@ -19,7 +22,7 @@ public class DriverAuthentication implements Authentication{
     }
     
     @Override
-    public boolean login() {
+    public Account login() {
         Scanner read=new Scanner(System.in);
         System.out.println("Driver Login:");
         System.out.print("Username: ");
@@ -36,13 +39,14 @@ public class DriverAuthentication implements Authentication{
                 String[] driverInfo=currentDriverLine.split(" ");
                 if(driverInfo[0].equals(username) && driverInfo[1].equals(password)){
                     found=true;
-                    if(driverInfo[4].equals("true")){
+                    if(driverInfo[6].equals("true")){
                         System.out.println("Welcome "+username);
-                        return true;
+                        driver=new DriverAccount(driverInfo[0], driverInfo[1], driverInfo[2], driverInfo[3], driverInfo[4], driverInfo[5]);
+                        return driver;
                     }
                     else{
                         System.out.println("You are suspended");
-                        return false;
+                        return driver;
                     }
                 }
             }
@@ -50,11 +54,13 @@ public class DriverAuthentication implements Authentication{
         } 
         catch (FileNotFoundException ex) {
             Logger.getLogger(UserAuthentication.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DriverAuthentication.class.getName()).log(Level.SEVERE, null, ex);
         }
         if(!found){
             System.out.println("You are not registered");
         }
-        return false;
+        return driver;
     }
 
     @Override
@@ -73,6 +79,33 @@ public class DriverAuthentication implements Authentication{
         String nationalID=read.nextLine();
         System.out.print("Driving License: ");
         String drivingLicense=read.nextLine();
+        try {
+            driverCredentials=getSystem().getDriverCredentials();
+            read = new Scanner(driverCredentials);
+            String currentDriverLine="";
+            boolean found=false;
+            while (read.hasNextLine()){ //check if username is registered
+                currentDriverLine=read.nextLine();
+                String[] driverInfo=currentDriverLine.split(" ");
+                if(driverInfo[0].equals(username)){
+                    found=true;
+                    break;
+                }
+            }
+            if(!found){
+                Account newDriver = new DriverAccount(username,password,mobilePhone,email,nationalID,drivingLicense);
+                newDriver.saveAccount();
+                System.out.println("Account creation request has been made");
+            }
+            else{
+                System.out.println("Username already registered");
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(DriverAuthentication.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DriverAuthentication.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         try {
             Account driver=new DriverAccount(username,password,mobilePhone,email,nationalID,drivingLicense);
         } catch (IOException ex) {

@@ -11,35 +11,20 @@ public class Admin {
     private String password;
     private Database system;
     private FileWriter adminWriter;
-    private File adminCredentials;
+    private File driverApplications;
+    
     
     public Admin(String username,String password) throws IOException{
         this.username=username;
         this.password=password;
-        system=Database.getInstance();
-        adminCredentials=getSystem().getAdminCredentials();
-        Scanner read=new Scanner(adminCredentials);
-        String currentAdminLine="";
-        boolean found=false;
-        while (read.hasNextLine()){ //check if username is registered
-            currentAdminLine=read.nextLine();
-            String[] userInfo=currentAdminLine.split(" ");
-            if(userInfo[0].equals(username)){
-                found=true;
-                break;
-            }
-        }
-        if(!found){
-            setSystem();
-            system=getSystem();
-            adminWriter=system.getAdminCredentialsWriter();
-            adminWriter.write(getUsername()+" "+getPassword()+"\n");
-            adminWriter.flush();
-            System.out.println("Welcome "+getUsername());
-        }
-        else{
-            System.out.println("Username already registered");
-        }
+        setSystem();
+        system=getSystem();
+    }
+    
+    public void saveAccount() throws IOException{
+        adminWriter=system.getAdminCredentialsWriter();
+        adminWriter.write(getUsername()+" "+getPassword()+"\n");
+        adminWriter.flush();
     }
     
     public void setUsername(String username){
@@ -55,9 +40,9 @@ public class Admin {
         return password;
     }
     
-    public void listPendingDrivers() throws FileNotFoundException{
+    public void listPendingDrivers() throws FileNotFoundException, IOException{
         String pendingDrivers="";
-        File driverApplications=getSystem().getDriverAppCredentials();
+        driverApplications=system.getDriverAppCredentials();
         Scanner myReader=new Scanner(driverApplications);
         while (myReader.hasNextLine()) {
             pendingDrivers += myReader.nextLine()+"\n";
@@ -81,10 +66,11 @@ public class Admin {
             }
             newPendingDrivers += driverLine+"\n";
         }
-        FileWriter myWriter=getSystem().getDriverAppWriter();
+        myReader.close();
+        File drivers=getSystem().getDriverAppCredentials();
+        FileWriter myWriter = new FileWriter(drivers);
         myWriter.write(newPendingDrivers);
         myWriter.close();
-        myReader.close();
         FileWriter driverWriter=system.getDriverCredentialsWriter();
         driverWriter.write(activateDriver(verifiedDriver)+"\n");
         driverWriter.close();
