@@ -1,16 +1,17 @@
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class ZAA {
 //    private static Authentication user,driver;
 //    private static AdminAuthentication admin;
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
 //        System.out.println("This is a static test case, instructions will be written before executing them (instructions start with '**':-");
 //        Area haram = new Area("haram");
 //        Area dokki = new Area("dokki");
 //        System.out.println("**2 areas were created");
 //
-//        Scanner read=new Scanner(System.in);
+        Scanner read=new Scanner(System.in);
 //
 //        user=new UserAuthentication();
 //        user.register();
@@ -62,6 +63,18 @@ public class ZAA {
 //        System.out.println(userAcc.getNotifications());
 //        System.out.println("**driver notifications array:");
 //        System.out.println(driverAcc.getNotifications());
-
+        Authentication userAuth = new UserAuthentication();
+        Authentication driverAuth = new DriverAuthentication();
+        AdminAuthentication adminAuth = new AdminAuthentication();
+//        userAuth.register();
+        driverAuth.register();
+//        Account user = userAuth.login();
+        Admin admin = adminAuth.login();
+        admin.listPendingDrivers();
+        System.out.print("Enter driver's username to verify: ");
+//        String driverUsername = read.nextLine();
+//        admin.verifyDriver(driverUsername);
+        admin.listPendingDrivers();
+        Account driver = driverAuth.login();
     }
 }

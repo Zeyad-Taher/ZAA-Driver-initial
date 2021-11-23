@@ -1,3 +1,3 @@
-//public interface Observer {
-//    public void update(Object object);
-//}
+public interface Observer {
+    public void update(Object object);
+}

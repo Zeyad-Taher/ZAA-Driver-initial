@@ -25,14 +25,17 @@ public class Database {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         Connection con = Database.getInstance();
         Statement stat = con.createStatement();
+        // 1
 //        String sql = "CREATE TABLE users (" +
 //                "  username TEXT NOT NULL PRIMARY KEY," +
 //                "  password TEXT NOT NULL," +
 //                "  mobile_number TEXT NOT NULL," +
-//                "  email TEXT NOT NULL," +
-//                "  is_driver TINYINT NULL," +
+//                "  email TEXT NULL," +
+//                "  is_driver BOOLEAN NULL," +
 //                "  natID TEXT NULL," +
 //                "  drivingLicense TEXT NULL," +
+//                "  is_active BOOLEAN," +
+//                "  is_pending BOOLEAN," +
 //                "  areaSubscriptionID TEXT NULL);";
 //        String sql = "INSERT INTO users" +
 //                "(username," +
@@ -53,14 +56,56 @@ public class Database {
 //                "'lc'," +
 //                "null);";
 
-        String sql = "SELECT * FROM users;";
+        // 2
+//        String sql = "CREATE TABLE admins ("+
+//                "username TEXT NOT NULL PRIMARY KEY,"+
+//                "password TEXT NOT NULL)";
 
-//        String sql = "DROP TABLE users;";
+        // 3
+//        String sql = "INSERT INTO admins"+
+//                "(username, password)"+
+//                "VALUES ('admin', 'admin')";
+
+        // 4
+//        String sql = "CREATE TABLE areas(" +
+//                "name TEXT NOT NULL PRIMARY KEY)";
+
+        // 5
+//        String sql = "INSERT INTO areas"+
+//                "(name)"+
+//                "VALUES ('Giza')";
+
+        // 6
+//        String sql = "CREATE TABLE fav_areas("+
+//                "areaName TEXT NOT NULL,"+
+//                "driverUsername TEXT NOT NULL," +
+//                "FOREIGN KEY(areaName) REFERENCES area(name),"+
+//                "FOREIGN KEY(driverUsername) REFERENCES users(username))";
+
+        // 7
+//        String sql = "CREATE TABLE rides("+
+//                "source_name TEXT NOT NULL,"+
+//                "destination_name TEXT NOT NULL,"+
+//                "caller_username TEXT NOT NULL PRIMARY KEY,"+
+//                "FOREIGN KEY(source_name) REFERENCES area(name),"+
+//                "FOREIGN KEY(destination_name) REFERENCES area(name),"+
+//                "FOREIGN KEY(caller_username) REFERENCES area(name))";
+
+        // 8
+//        String sql = "CREATE TABLE offer("+
+//                "price REAL NOT NULL,"+
+//                "ride_caller TEXT NOT NULL,"+
+//                "FOREIGN KEY(ride_caller) REFERENCES rides(caller_username))";
+
+        String sql = "SELECT * FROM areas;";
+//        String sql = "SELECT * FROM admins;";
+
+//        String sql = "DROP TABLE rides;";
 
 
         ResultSet rs = stat.executeQuery(sql);
         while (rs.next()){
-            System.out.println(rs.getString("username"));
+            System.out.println(rs.getString("name"));
         }
 
         stat.close();

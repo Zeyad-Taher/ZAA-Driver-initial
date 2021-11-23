@@ -1,56 +1,47 @@
-//import java.io.File;
-//import java.io.FileNotFoundException;
-//import java.io.IOException;
-//import java.util.Scanner;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
-//
-//public class AdminAuthentication{
-//
-//    private Database system;
-//    private Admin admin;
-//    private File adminCredentials;
-//
-//    public AdminAuthentication() throws IOException {
-//        system=Database.getInstance();
-//    }
-//    public Database getSystem(){
-//        return system;
-//    }
-//
-//    public Admin login() throws IOException {
-//        Scanner read=new Scanner(System.in);
-//        System.out.println("Admin Login:");
-//        System.out.print("Username: ");
-//        String username=read.nextLine();
-//        System.out.print("Password: ");
-//        String password=read.nextLine();
-//        File currentAdmins=getSystem().getAdminCredentials();
-//        boolean found=false;
-//        try {
-//            Scanner myReader=new Scanner(currentAdmins);
-//            String currentAdminLine="";
-//            while (myReader.hasNextLine()) {
-//                currentAdminLine=myReader.nextLine();
-//                String[] adminInfo=currentAdminLine.split(" ");
-//                if(adminInfo[0].equals(username) && adminInfo[1].equals(password)){
-//                    found=true;
-//                    admin=new Admin(username,password);
-//                    System.out.println("Welcome "+username);
-//                    return admin;
-//                }
-//            }
-//            myReader.close();
-//        }
-//        catch (FileNotFoundException ex) {
-//            Logger.getLogger(AdminAuthentication.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        if(!found){
-//            System.out.println("You are not registered");
-//        }
-//        return admin;
-//    }
-//
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class AdminAuthentication{
+
+    private Connection system;
+    private Admin admin;
+
+    public AdminAuthentication() throws SQLException, ClassNotFoundException {
+        system=Database.getInstance();
+    }
+
+    public Admin login() {
+        Scanner read=new Scanner(System.in);
+        System.out.println("Admin Login:");
+        System.out.print("Username: ");
+        String username=read.nextLine();
+        System.out.print("Password: ");
+        String password=read.nextLine();
+        try {
+            Statement stat = system.createStatement();
+            String sql = "SELECT * FROM admins WHERE username = '"+username+"' AND password = '" + password + "'";
+            ResultSet rs = stat.executeQuery(sql);
+            if(rs.next()) {
+                admin = new Admin(username, password);
+            }
+            else {
+                System.out.println("Error: Admin not found");
+            }
+        }
+        catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(AdminAuthentication.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return admin;
+    }
+
 //    public void register() throws FileNotFoundException, IOException {
 //        Scanner regRead=new Scanner(System.in);
 //        System.out.println("Admin Register:");
@@ -80,5 +71,5 @@
 //            System.out.println("Username already registerd");
 //        }
 //    }
-//
-//}
+
+}
