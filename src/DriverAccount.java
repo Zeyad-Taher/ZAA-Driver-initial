@@ -1,3 +1,4 @@
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -8,6 +9,7 @@ public class DriverAccount extends Account implements Observer {
     private String nationalID;
     private String drivingLicense;
     private ArrayList<Area> favAreas;
+    private double averageRating;
 
     public DriverAccount(String username,String password,String mobilePhone,String email,String nationalID,String drivingLicense) throws SQLException, ClassNotFoundException {
         super();
@@ -20,6 +22,7 @@ public class DriverAccount extends Account implements Observer {
         active = false;
         setType(this);
         favAreas = new ArrayList<>();
+        averageRating = calculateAverageRating();
     }
 
     public void setNationalID(String nationalID){
@@ -62,6 +65,10 @@ public class DriverAccount extends Account implements Observer {
         return offer;
     }
 
+    public double getAverageRating() {
+        return averageRating;
+    }
+
     @Override
     public void update(Object object) {
         if(object instanceof Ride){
@@ -78,4 +85,53 @@ public class DriverAccount extends Account implements Observer {
         }
     }
 
+    public void getRatingList() // this function is inside the DriverAccount class which will iterate on the rating file to get the ratings and who rated it.
+    {
+        try {
+            Statement stat = Database.getInstance().createStatement();
+            String sql = "SELECT * FROM ratings WHERE driverUsername = '"+getUsername()+"'";
+            ResultSet rs = stat.executeQuery(sql);
+            while (rs.next()) {
+                System.out.println(rs.getString("userUsername") + " - " + rs.getInt("rate") + " stars");
+            }
+        } catch (SQLException | ClassNotFoundException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public void insertAndUpdateAverageRating(Rating rating) // this function is inside the DriverAccount class which will update the averagerating attribute and the rating list file.
+    {
+        // add rating to the rating list and update the average Rating
+        try {
+            Statement stat = Database.getInstance().createStatement();
+            String sql = "INSERT OR IGNORE INTO ratings" +
+                    "(userUsername, rate, driverUsername) VALUES ('"+rating.getUsername()+"', '"+rating.getRate()+"', '"+getUsername()+"')";
+            stat.executeUpdate(sql);
+            averageRating = calculateAverageRating();
+        } catch (SQLException | ClassNotFoundException throwables) {
+            System.out.println("Error: can't rate driver " + getUsername());
+        }
+    }
+
+    public double calculateAverageRating() {
+        // compute the average rating by adding all ratings in the file then divide them by their total
+        try {
+            Statement stat = Database.getInstance().createStatement();
+            String sql = "SELECT rate FROM ratings WHERE driverUsername = '"+getUsername()+"'";
+            double total = 0;
+            int count = 0;
+            ResultSet rs = stat.executeQuery(sql);
+            while (rs.next()) {
+                total += rs.getInt("rate");
+                count++;
+            }
+            if(count == 0) {
+                return 0;
+            }
+            return total / count;
+        } catch (SQLException | ClassNotFoundException throwables) {
+            throwables.printStackTrace();
+        }
+        return 0;
+    }
 }

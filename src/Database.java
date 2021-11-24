@@ -93,8 +93,17 @@ public class Database {
 //                "ride_caller TEXT NOT NULL,"+
 //                "FOREIGN KEY(ride_caller) REFERENCES rides(caller_username))";
 
-        String sql = "SELECT * FROM users WHERE username in (SELECT driverUsername FROM fav_areas WHERE areaName = 'Haram')";
-//        String sql = "SELECT * FROM admins;";
+        //9
+//        String sql = "CREATE TABLE ratings("+
+//                "userUsername TEXT NOT NULL,"+
+//                "driverUsername TEXT NOT NULL," +
+//                "rate INTEGER NOT NULL,"+
+//                "UNIQUE(userUsername, driverUsername),"+
+//                "FOREIGN KEY(userUsername) REFERENCES users(username),"+
+//                "FOREIGN KEY(driverUsername) REFERENCES users(username))";
+
+//        String sql = "SELECT * FROM users WHERE username in (SELECT driverUsername FROM fav_areas WHERE areaName = 'Haram')";
+        String sql = "SELECT * FROM admins;";
 
 //        String sql = "DROP TABLE fav_areas;";
 
@@ -102,9 +111,9 @@ public class Database {
 //                "(driverUsername, areaName) VALUES ('adel', 'Haram')";
 
         ResultSet rs = stat.executeQuery(sql);
-        while (rs.next()){
-            System.out.println(rs.getString("username"));
-        }
+//        while (rs.next()){
+//            System.out.println(rs.getString("username"));
+//        }
 
         stat.close();
     }
