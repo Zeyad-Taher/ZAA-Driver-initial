@@ -7,7 +7,6 @@ import java.util.Scanner;
 public class UserAuthentication implements Authentication{
     private Connection system;
     private Account user;
-    private File userCredentials;
 
     public UserAuthentication() throws SQLException, ClassNotFoundException {
         system=Database.getInstance();

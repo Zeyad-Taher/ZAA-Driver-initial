@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class UserInterface {
     private static Authentication user,driver;
     private static AdminAuthentication admin;
-    public void chooseEntityMenu() throws IOException, SQLException, ClassNotFoundException {
+    public void chooseEntityMenu() throws SQLException, ClassNotFoundException {
         Scanner read=new Scanner(System.in);
         System.out.println("Please choose from the following menu:");
         System.out.println("\n-----Choosing Entity Menu-----\n"+
@@ -31,7 +31,7 @@ public class UserInterface {
         }
     }
 
-    public void adminMainMenu() throws IOException, SQLException, ClassNotFoundException {
+    public void adminMainMenu() throws SQLException, ClassNotFoundException {
         Scanner read=new Scanner(System.in);
         System.out.println("Please choose from the following menu:");
         System.out.println("\n-----Choosing Admin Main Menu-----\n"+
@@ -56,7 +56,7 @@ public class UserInterface {
         }
     }
 
-    public void afterLoginMenu(Admin admin) throws IOException, SQLException, ClassNotFoundException {
+    public void afterLoginMenu(Admin admin) throws SQLException, ClassNotFoundException {
         Scanner read = new Scanner(System.in);
         System.out.println("Please choose from the following menu:");
         System.out.println("\n-----Choosing from Admin functions-----\n"+
@@ -96,7 +96,7 @@ public class UserInterface {
         }
     }
 
-    public void driverMainMenu () throws IOException, SQLException, ClassNotFoundException {
+    public void driverMainMenu () throws SQLException, ClassNotFoundException {
         Scanner read=new Scanner(System.in);
         System.out.println("Please choose from the following menu:");
         System.out.println("\n-----Choosing Driver Main Menu-----\n"+
@@ -108,8 +108,6 @@ public class UserInterface {
         if (choice == 1)
         {
             driver.register();
-//            DriverAccount driverAccount = (DriverAccount) driver.login();
-//            afterLoginMenu(driverAccount);
             driverMainMenu();
         }
         else if (choice == 2)
@@ -133,7 +131,7 @@ public class UserInterface {
         }
     }
 
-    public void afterLoginMenu(DriverAccount driverAccount) throws IOException, SQLException, ClassNotFoundException {
+    public void afterLoginMenu(DriverAccount driverAccount) throws SQLException, ClassNotFoundException {
         Scanner read = new Scanner(System.in);
         System.out.println("Please choose from the following menu:");
         System.out.println("\n-----Choosing from Driver functions-----\n"+
@@ -190,7 +188,7 @@ public class UserInterface {
             System.out.println("Thanks for using our App, We hope to see you soon =)\n");
         }
     }
-    public void userMainMenu () throws IOException, SQLException, ClassNotFoundException {
+    public void userMainMenu () throws SQLException, ClassNotFoundException {
         Scanner read=new Scanner(System.in);
         System.out.println("Please choose from the following menu:");
         System.out.println("\n-----Choosing User Main Menu-----\n"+
@@ -224,7 +222,7 @@ public class UserInterface {
             System.out.println("Thanks for using our App, We hope to see you soon =)\n");
         }
     }
-    public void afterLoginMenu(UserAccount userAccount) throws IOException, SQLException, ClassNotFoundException {
+    public void afterLoginMenu(UserAccount userAccount) throws SQLException, ClassNotFoundException {
         Scanner read = new Scanner(System.in);
         System.out.println("Please choose from the following menu:");
         System.out.println("\n-----Choosing from User functions-----\n" +
