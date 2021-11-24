@@ -1,6 +1,4 @@
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -134,6 +132,7 @@ public class UserInterface {
             System.out.println("Thanks for using our App, We hope to see you soon =)\n");
         }
     }
+
     public void afterLoginMenu(DriverAccount driverAccount) throws IOException, SQLException, ClassNotFoundException {
         Scanner read = new Scanner(System.in);
         System.out.println("Please choose from the following menu:");
