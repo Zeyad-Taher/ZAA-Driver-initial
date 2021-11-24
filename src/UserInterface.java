@@ -117,7 +117,13 @@ public class UserInterface {
         else if (choice == 2)
         {
             DriverAccount driverAccount = (DriverAccount) driver.login();
-            afterLoginMenu(driverAccount);
+            if(driverAccount != null) {
+                afterLoginMenu(driverAccount);
+            }
+            else {
+                System.out.println("Driver not registered or not active");
+                driverMainMenu();
+            }
         }
         else if (choice == 3)
         {
