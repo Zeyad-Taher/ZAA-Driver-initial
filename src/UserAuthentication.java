@@ -30,7 +30,7 @@ public class UserAuthentication implements Authentication{
                 System.out.println("Logged in as: " + username);
             } else {
                 user = null;
-                System.out.println("Error : can't log in (Either suspended or not found");
+                System.out.println("Error : Password incorrect");
             }
         }
         return user;

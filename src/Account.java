@@ -55,18 +55,7 @@ public abstract class Account {
         return email;
     }
     public void setActive(boolean active){
-        try{
-            this.active = active;
-            Statement stat = Database.getInstance().createStatement();
-            String sql = "UPDATE users SET is_active = 1, is_pending = 0 WHERE username = '" + username +"'";
-            stat.executeUpdate(sql);
-            if(this instanceof DriverAccount) {
-                Load.pendingDrivers.remove(this);
-                Load.drivers.add((DriverAccount) this);
-            }
-        } catch (SQLException | ClassNotFoundException throwables) {
-            throwables.printStackTrace();
-        }
+        this.active = active;
     }
     public boolean getActive(){
         return active;

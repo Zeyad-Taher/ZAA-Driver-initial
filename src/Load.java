@@ -7,6 +7,7 @@ public class Load {
     public static ArrayList<DriverAccount> drivers = new ArrayList<>();
     public static ArrayList<DriverAccount> pendingDrivers = new ArrayList<>();
     public static ArrayList<UserAccount> users = new ArrayList<>();
+    public static ArrayList<Account> suspendedUsers = new ArrayList<>();
     public static ArrayList<Area> areas = new ArrayList<>();
 
     public static void loadInit() {
@@ -14,6 +15,7 @@ public class Load {
         loadPendingDrivers();
         loadAreas();
         loadUsers();
+        loadSuspendedUsers();
         //Set drivers fav areas
         for(DriverAccount driver : drivers) {
             try {
@@ -25,7 +27,6 @@ public class Load {
                     favAreas.add(findArea(rs.getString("name")));
                 }
                 driver.setFavAreas(favAreas);
-//                System.out.println("Driver username: " + driver.getUsername() + ", areas: " + favAreas);
             } catch (SQLException | ClassNotFoundException throwables) {
                 throwables.printStackTrace();
             }
@@ -39,7 +40,11 @@ public class Load {
                 ResultSet rs = stat.executeQuery(sql);
                 ArrayList<Observer> observers = new ArrayList<>();
                 while (rs.next()) {
-                    observers.add(findActiveDriver(rs.getString("username")));
+                    DriverAccount driver = findActiveDriver(rs.getString("username"));
+                    if(driver == null) {
+                        driver = (DriverAccount) findSuspendedAcount(rs.getString("username"));
+                    }
+                    observers.add(driver);
                 }
                 area.setObservers(observers);
 //                System.out.println("Area name: " + area.getName() + ", drivers: " + observers);
@@ -91,11 +96,30 @@ public class Load {
     public static void loadUsers() {
         try{
             Statement stat = Database.getInstance().createStatement();
-            String sql = "SELECT * FROM users WHERE is_driver = 0";
+            String sql = "SELECT * FROM users WHERE is_driver = 0 AND is_active = 1";
             ResultSet rs = stat.executeQuery(sql);
             while (rs.next()){
                 users.add(new UserAccount(rs.getString("username"), rs.getString("password"), rs.getString("mobile_number"), rs.getString("email")));
             }
+        } catch (SQLException | ClassNotFoundException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public static void loadSuspendedUsers() {
+        try{
+            Statement stat = Database.getInstance().createStatement();
+            String sql = "SELECT * FROM users WHERE is_active = 0 AND is_pending = 0";
+            ResultSet rs = stat.executeQuery(sql);
+            while (rs.next()){
+                if(rs.getBoolean("is_driver")) {
+                    suspendedUsers.add(new DriverAccount(rs.getString("username"), rs.getString("password"), rs.getString("mobile_number"), rs.getString("email"), rs.getString("natID"), rs.getString("drivingLicense")));
+                }
+                else {
+                    suspendedUsers.add(new UserAccount(rs.getString("username"), rs.getString("password"), rs.getString("mobile_number"), rs.getString("email")));
+                }
+            }
+            System.out.println(users);
         } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();
         }
@@ -133,6 +157,15 @@ public class Load {
         for(UserAccount user : users) {
             if(user.getUsername().equals(username)){
                 return user;
+            }
+        }
+        return null;
+    }
+
+    public static Account findSuspendedAcount(String username) {
+        for(Account account : suspendedUsers) {
+            if(account.getUsername().equals(username)){
+                return account;
             }
         }
         return null;

@@ -1,5 +1,6 @@
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Admin {
     private String username;
@@ -34,16 +35,45 @@ public class Admin {
     public void verifyDriver(String username) {
         DriverAccount driver = Load.findPendingDriver(username);
         if(driver != null) {
-            driver.setActive(true);
+            try{
+                Statement stat = Database.getInstance().createStatement();
+                driver.setActive(true);
+                String sql = "UPDATE users SET is_active = 1, is_pending = 0 WHERE username = '" + username +"'";
+                stat.executeUpdate(sql);
+                Load.pendingDrivers.remove(driver);
+                Load.drivers.add(driver);
+            } catch (SQLException | ClassNotFoundException throwables) {
+                throwables.printStackTrace();
+            }
         }
     }
 
     public void suspendPerson(String username) {
         if(Load.findActiveDriver(username) != null){
-            Load.findActiveDriver(username).setActive(false);
+            DriverAccount driver = Load.findActiveDriver(username);
+            try{
+                Statement stat = Database.getInstance().createStatement();
+                driver.setActive(false);
+                String sql = "UPDATE users SET is_active = 0, is_pending = 0 WHERE username = '" + username +"'";
+                stat.executeUpdate(sql);
+                Load.drivers.remove(driver);
+                Load.suspendedUsers.add(driver);
+            } catch (SQLException | ClassNotFoundException throwables) {
+                throwables.printStackTrace();
+            }
         }
         else if(Load.findUser(username) != null) {
-            Load.findUser(username).setActive(false);
+            UserAccount user = Load.findUser(username);
+            try{
+                Statement stat = Database.getInstance().createStatement();
+                user.setActive(false);
+                String sql = "UPDATE users SET is_active = 0, is_pending = 0 WHERE username = '" + username +"'";
+                stat.executeUpdate(sql);
+                Load.users.remove(user);
+                Load.suspendedUsers.add(user);
+            } catch (SQLException | ClassNotFoundException throwables) {
+                throwables.printStackTrace();
+            }
         }
         else {
             System.out.println("Error: This person is either suspended or doesn't exist");
@@ -52,25 +82,5 @@ public class Admin {
 
     public Connection getSystem(){
         return system;
-    }
-
-    public String activateDriver(String driver){
-        String[] driverInfo=driver.split(" ");
-        String newDriver="";
-        for(int i=0;i<driverInfo.length-1;i++){
-            newDriver+=driverInfo[i]+" ";
-        }
-        newDriver+="true";
-        return newDriver;
-    }
-
-    public String deActivatePerson(String person){
-        String[] driverInfo=person.split(" ");
-        String newPerson="";
-        for(int i=0;i<driverInfo.length-1;i++){
-            newPerson+=driverInfo[i]+" ";
-        }
-        newPerson+="false";
-        return newPerson;
     }
 }

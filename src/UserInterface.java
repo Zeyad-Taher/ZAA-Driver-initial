@@ -73,7 +73,7 @@ public class UserInterface {
         else if (choice == 2)
         {
             Scanner ned = new Scanner(System.in);
-            System.out.println("Please enter the username of the account you want to verify:\n");
+            System.out.print("Please enter the username of the account you want to verify: ");
             String driverName = ned.nextLine();
             admin.verifyDriver(driverName);
             afterLoginMenu(admin);
@@ -81,7 +81,7 @@ public class UserInterface {
         else if (choice == 3)
         {
             Scanner ned = new Scanner(System.in);
-            System.out.println("Please enter the username of the account you want to suspend:\n");
+            System.out.print("Please enter the username of the account you want to suspend: ");
             String accountName = ned.nextLine();
             admin.suspendPerson(accountName);
             afterLoginMenu(admin);
@@ -138,7 +138,7 @@ public class UserInterface {
         System.out.println("Please choose from the following menu:");
         System.out.println("\n-----Choosing from Driver functions-----\n"+
                 "1- List Ratings\n" + "2- View average rating\n" + "3- List notifications\n"
-                + "4- Logout\n" + "5- Exit\n");
+                + "4- Add favourite area\n" + "5- Logout\n" + "6- Exit\n");
         int choice = read.nextInt();
         read.nextLine();
 
@@ -163,16 +163,29 @@ public class UserInterface {
             int notificationNumber = read.nextInt();
             read.nextLine();
             Ride ride = (Ride) driverAccount.getNotifications().get(notificationNumber - 1).getPayload();
+            System.out.print("Enter your estimated price: ");
             int price = read.nextInt();
             read.nextLine();
             driverAccount.makeOffer(price, ride);
             afterLoginMenu(driverAccount);
         }
-        else if (choice == 4)
+        else if (choice == 4) {
+            System.out.print("Enter area's name: ");
+            String areaName = read.nextLine();
+            Area area = Load.findArea(areaName);
+            if(area != null) {
+                driverAccount.addFavArea(area);
+            }
+            else {
+                System.out.println("Error: area not supported yet");
+            }
+            afterLoginMenu(driverAccount);
+        }
+        else if (choice == 5)
         {
             driverMainMenu();
         }
-        else if (choice == 5)
+        else if (choice == 6)
         {
             System.out.println("Thanks for using our App, We hope to see you soon =)\n");
         }
@@ -189,14 +202,18 @@ public class UserInterface {
         if (choice == 1)
         {
             user.register();
-//            UserAccount userAccount = (UserAccount) user.login();
-//            afterLoginMenu(userAccount);
             userMainMenu();
         }
         else if (choice == 2)
         {
             UserAccount userAccount = (UserAccount) user.login();
-            afterLoginMenu(userAccount);
+            if(userAccount != null) {
+                afterLoginMenu(userAccount);
+            }
+            else {
+                userMainMenu();
+            }
+
         }
         else if (choice == 3)
         {
@@ -220,6 +237,7 @@ public class UserInterface {
             for(Area area : Load.areas) {
                 System.out.print(area + " - ");
             }
+            System.out.println();
             afterLoginMenu(userAccount);
         }
         else if (choice == 2) {
