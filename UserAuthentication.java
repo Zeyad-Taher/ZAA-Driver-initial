@@ -49,28 +49,7 @@ public class UserAuthentication implements Authentication{
         String email=regRead.nextLine();
         try {
             Statement stat = system.createStatement();
-            String sql = "INSERT INTO users" +
-                "(username," +
-                "password," +
-                "mobile_number," +
-                "email," +
-                "is_driver," +
-                "natID," +
-                "drivingLicense," +
-                "is_active," +
-                "is_pending," +
-                "areaSubscriptionID)" +
-                "VALUES" +
-                "('"+ username +"'," +
-                "'"+password+"'," +
-                "'"+mobilePhone+"'," +
-                "'"+email+"'," +
-                "0," +
-                "null," +
-                "null," +
-                "1," +
-                "0," +
-                "null);";
+            String sql = Database.getAddUserSQL(username,password,mobilePhone,email);
             stat.executeUpdate(sql);
             Load.users.add(new UserAccount(username, password, mobilePhone, email));
             System.out.println("User account created successfully");

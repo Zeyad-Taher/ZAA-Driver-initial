@@ -45,7 +45,7 @@ public abstract class Account {
         this.email = email;
         try{
             Statement stat = Database.getInstance().createStatement();
-            String sql = "UPDATE users SET email = '" + email + "' WHERE username = '" + username +"'";
+            String sql = Database.getUpdateEmailSQL(email,username);
             stat.executeUpdate(sql);
         } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();
@@ -58,7 +58,7 @@ public abstract class Account {
         try{
             this.active = active;
             Statement stat = Database.getInstance().createStatement();
-            String sql = "UPDATE users SET is_active = 1, is_pending = 0 WHERE username = '" + username +"'";
+            String sql = Database.getUpdateActivitySQL(username);
             stat.executeUpdate(sql);
             if(this instanceof DriverAccount) {
                 Load.pendingDrivers.remove(this);

@@ -17,6 +17,85 @@ public class Database {
         return con;
     }
 
+    public static String getUpdateEmailSQL(String email,String username){
+        return "UPDATE users SET email = '" + email + "' WHERE username = '" + username +"'";
+    }
+
+    public static String getUpdateActivitySQL(String username){
+        return "UPDATE users SET is_active = 1, is_pending = 0 WHERE username = '" + username +"'";
+    }
+
+    public static String getAdminsSQL(String username,String password){
+        return "SELECT * FROM admins WHERE username = '"+username+"' AND password = '" + password + "'";
+    }
+
+    public static String getAddDriverSQL(String username,String password,String mobilePhone,String email,String nationalID,String drivingLicense){
+        return "INSERT INTO users" +
+                "(username," +
+                "password," +
+                "mobile_number," +
+                "email," +
+                "is_driver," +
+                "natID," +
+                "drivingLicense," +
+                "is_active," +
+                "is_pending," +
+                "areaSubscriptionID)" +
+                "VALUES" +
+                "('"+ username +"'," +
+                "'"+password+"'," +
+                "'"+mobilePhone+"'," +
+                "'"+email+"'," +
+                "1," +
+                "'"+nationalID+"'," +
+                "'"+drivingLicense+"'," +
+                "0," +
+                "1," +
+                "null);";
+    }
+
+    public static String getAddUserSQL(String username,String password,String mobilePhone,String email){
+        return "INSERT INTO users" +
+                "(username," +
+                "password," +
+                "mobile_number," +
+                "email," +
+                "is_driver," +
+                "natID," +
+                "drivingLicense," +
+                "is_active," +
+                "is_pending," +
+                "areaSubscriptionID)" +
+                "VALUES" +
+                "('"+ username +"'," +
+                "'"+password+"'," +
+                "'"+mobilePhone+"'," +
+                "'"+email+"'," +
+                "0," +
+                "null," +
+                "null," +
+                "1," +
+                "0," +
+                "null);";
+    }
+    public static String getAddFavAreaSQL(String username,Area area){
+        return "INSERT OR IGNORE INTO fav_areas" +
+                "(driverUsername, areaName) VALUES ('"+username+"', '"+area.getName()+"')";
+    }
+
+    public static String getDriverRatingSQL(String username){
+        return "SELECT * FROM ratings WHERE driverUsername = '"+username+"'";
+    }
+
+    public static String getAddRatingSQL(String username, Rating rating){
+        return "INSERT OR IGNORE INTO ratings" +
+                "(userUsername, rate, driverUsername) VALUES ('"+rating.getUsername()+"', '"+rating.getRate()+"', '"+username+"')";
+    }
+
+    public static String getDriverRateSQL(String username){
+        return "SELECT rate FROM ratings WHERE driverUsername = '"+username+"'";
+    }
+
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         Connection con = Database.getInstance();
         Statement stat = con.createStatement();

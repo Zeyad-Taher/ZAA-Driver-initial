@@ -24,7 +24,7 @@ public class AdminAuthentication{
         String password=read.nextLine();
         try {
             Statement stat = system.createStatement();
-            String sql = "SELECT * FROM admins WHERE username = '"+username+"' AND password = '" + password + "'";
+            String sql = Database.getAdminsSQL(username,password);
             ResultSet rs = stat.executeQuery(sql);
             if(rs.next()) {
                 admin = new Admin(username, password);

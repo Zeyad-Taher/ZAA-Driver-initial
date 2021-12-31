@@ -42,8 +42,7 @@ public class DriverAccount extends Account implements Observer {
             try {
                 area.registerObserver(this);
                 Statement stat = Database.getInstance().createStatement();
-                String sql = "INSERT OR IGNORE INTO fav_areas" +
-                        "(driverUsername, areaName) VALUES ('"+getUsername()+"', '"+area.getName()+"')";
+                String sql = Database.getAddFavAreaSQL(getUsername(),area);
                 stat.executeUpdate(sql);
             } catch (SQLException | ClassNotFoundException throwables) {
                 System.out.println("Error: can't add fav area" + area);
@@ -89,7 +88,7 @@ public class DriverAccount extends Account implements Observer {
     {
         try {
             Statement stat = Database.getInstance().createStatement();
-            String sql = "SELECT * FROM ratings WHERE driverUsername = '"+getUsername()+"'";
+            String sql = Database.getDriverRatingSQL(getUsername());
             ResultSet rs = stat.executeQuery(sql);
             while (rs.next()) {
                 System.out.println(rs.getString("userUsername") + " - " + rs.getInt("rate") + " stars");
@@ -104,8 +103,7 @@ public class DriverAccount extends Account implements Observer {
         // add rating to the rating list and update the average Rating
         try {
             Statement stat = Database.getInstance().createStatement();
-            String sql = "INSERT OR IGNORE INTO ratings" +
-                    "(userUsername, rate, driverUsername) VALUES ('"+rating.getUsername()+"', '"+rating.getRate()+"', '"+getUsername()+"')";
+            String sql = Database.getAddRatingSQL(getUsername(),rating);
             stat.executeUpdate(sql);
             averageRating = calculateAverageRating();
         } catch (SQLException | ClassNotFoundException throwables) {
@@ -117,7 +115,7 @@ public class DriverAccount extends Account implements Observer {
         // compute the average rating by adding all ratings in the file then divide them by their total
         try {
             Statement stat = Database.getInstance().createStatement();
-            String sql = "SELECT rate FROM ratings WHERE driverUsername = '"+getUsername()+"'";
+            String sql = Database.getDriverRateSQL(getUsername());
             double total = 0;
             int count = 0;
             ResultSet rs = stat.executeQuery(sql);

@@ -53,28 +53,7 @@ public class DriverAuthentication implements Authentication{
         String drivingLicense=read.nextLine();
         try {
             Statement stat = system.createStatement();
-            String sql = "INSERT INTO users" +
-                    "(username," +
-                    "password," +
-                    "mobile_number," +
-                    "email," +
-                    "is_driver," +
-                    "natID," +
-                    "drivingLicense," +
-                    "is_active," +
-                    "is_pending," +
-                    "areaSubscriptionID)" +
-                    "VALUES" +
-                    "('"+ username +"'," +
-                    "'"+password+"'," +
-                    "'"+mobilePhone+"'," +
-                    "'"+email+"'," +
-                    "1," +
-                    "'"+nationalID+"'," +
-                    "'"+drivingLicense+"'," +
-                    "0," +
-                    "1," +
-                    "null);";
+            String sql = Database.getAddDriverSQL(username,password,mobilePhone,email,nationalID,drivingLicense);
             stat.executeUpdate(sql);
             Load.pendingDrivers.add(new DriverAccount(username, password, mobilePhone, email, nationalID, drivingLicense));
             System.out.println("Driver account created successfully");
