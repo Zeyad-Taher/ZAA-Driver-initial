@@ -86,14 +86,16 @@ public class Ride implements Subject, Notifiable{
         return "Ride from " + source + " to " + destination;
     }
 
-    public void startRide(){
+    public void startRide(Offer offer){
         startTime=new Date();
         System.out.println("Ride started at "+startTime);
+        addEvent(new RideEvent(offer.getDriver().getUsername(), getUser().getUsername(), EventType.LOCATION_ARRIVAL));
     }
 
     public void endRide(Offer offer){
         endTime=new Date();
         offer.getDriver().updateBalance(offer.getDriverPrice());
         System.out.println("Ride ended at "+endTime);
+        addEvent(new RideEvent(offer.getDriver().getUsername(), getUser().getUsername(), EventType.DESTINATION_ARRIVAL));
     }
 }

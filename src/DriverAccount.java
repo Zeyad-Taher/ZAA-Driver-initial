@@ -164,7 +164,7 @@ public class DriverAccount extends Account implements Observer {
     }
 
     public void startTrip(Offer offer){
-        offer.getRide().startRide();
+        offer.getRide().startRide(offer);
         isAvailable = false;
     }
 

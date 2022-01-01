@@ -3,7 +3,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 enum EventType {
-    PRICE_OFFER, ACCEPT_OFFER
+    LOCATION_ARRIVAL, DESTINATION_ARRIVAL
 }
 
 public class RideEvent {
@@ -25,6 +25,19 @@ public class RideEvent {
         initEvent();
         eventProps.put("User Name", userName);
         description += ", User Name: " + userName;
+    }
+
+    public RideEvent(String driverName, String userName, EventType type) {
+        if (type == EventType.LOCATION_ARRIVAL) {
+            name = "Driver arrived to user location";
+        }
+        else if (type == EventType.DESTINATION_ARRIVAL) {
+            name = "Driver arrived to destination";
+        }
+        initEvent();
+        eventProps.put("User Name", userName);
+        eventProps.put("Driver Name", driverName);
+        description += ", User Name: " + userName + ", Driver Name: " + driverName;
     }
 
     private void initEvent() {
