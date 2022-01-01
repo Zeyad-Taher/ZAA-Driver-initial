@@ -92,15 +92,15 @@ public class DriverAccount extends Account implements Observer {
     @Override
     public void update(Object object) {
         if (object instanceof Ride && this.isAvailable && currentRide == null) {
-            Ride r = (Ride) object;
+            Ride ride = (Ride) object;
             Date date = new Date();
             Timestamp now = new Timestamp(date.getTime());
-            addNotification(new Notification("new ride from " + r.getSource().getName(), now, (Notifiable) r));
+            addNotification(new Notification("new ride from " + ride.getSource().getName(), now, (Notifiable) ride));
         } else if (object instanceof Ride && this.isAvailable && currentRide.source == ((Ride) object).source && currentRide.destination == ((Ride) object).destination && currentRide.numberOfEmptySeats >= ((Ride) object).numberOfPassengers) {
-            Ride r = (Ride) object;
+            Ride ride = (Ride) object;
             Date date = new Date();
             Timestamp now = new Timestamp(date.getTime());
-            addNotification(new Notification("new ride from " + r.getSource().getName(), now, (Notifiable) r));
+            addNotification(new Notification("new ride from " + ride.getSource().getName(), now, (Notifiable) ride));
         }
         if (object instanceof Offer) {
             Offer offer = (Offer) object;

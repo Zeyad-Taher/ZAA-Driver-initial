@@ -12,7 +12,6 @@ public class ZAA {
         Scanner read=new Scanner(System.in);
 
         user=new UserAuthentication();
-        user.register();
         UserAccount userAcc=(UserAccount) user.login();
         if(userAcc!=null){
             System.out.println("You logged in successfully!");
@@ -21,17 +20,11 @@ public class ZAA {
             System.out.println("login failed");
         }
         driver=new DriverAuthentication();
-        driver.register();
 
         admin= new AdminAuthentication();
         Admin adminAcc=admin.login();
         if(adminAcc!=null){
             System.out.println("You logged in successfully!");
-            adminAcc.listPendingDrivers();
-            System.out.print("Enter driver's username to verify: ");
-            String name=read.nextLine();
-            adminAcc.verifyDriver(name);
-            adminAcc.listPendingDrivers();
             adminAcc.applyDiscount("dokki",10);
         }
         else{
