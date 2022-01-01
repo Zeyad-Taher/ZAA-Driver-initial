@@ -2,13 +2,14 @@ import java.util.ArrayList;
 
 public class Area implements Subject {
     String name;
+    int discount;
     ArrayList<Observer> observers;
 
     public Area(String name) {
+        discount=0;
         this.name = name;
         observers = new ArrayList<>();
     }
-
 
     public void setObservers(ArrayList<Observer> observers) {
         this.observers = observers;
@@ -38,6 +39,10 @@ public class Area implements Subject {
     public void setName(String name) {
         this.name = name;
     }
+
+    public void setDiscount(int discount){this.discount = discount;}
+
+    public int getDiscount(){return discount;}
 
     @Override
     public String toString() {

@@ -10,6 +10,7 @@ public class DriverAccount extends Account implements Observer {
     private String drivingLicense;
     private ArrayList<Area> favAreas;
     private double averageRating;
+    private double balance;
 
     public DriverAccount(String username,String password,String mobilePhone,String email,String nationalID,String drivingLicense) throws SQLException, ClassNotFoundException {
         super();
@@ -58,7 +59,7 @@ public class DriverAccount extends Account implements Observer {
         return drivingLicense;
     }
 
-    public Offer makeOffer(long price, Ride ride) {
+    public Offer makeOffer(double price, Ride ride) {
         Offer offer = new Offer(price, ride, this);
         ride.addOffer(offer);
         return offer;
@@ -131,5 +132,22 @@ public class DriverAccount extends Account implements Observer {
             throwables.printStackTrace();
         }
         return 0;
+    }
+
+    public void updateBalance(double money){
+        balance+=money;
+    }
+
+    public void startTrip(Offer offer){
+        offer.getRide().startRide(offer);
+    }
+
+    public void endTrip(Offer offer){
+        offer.getRide().endRide(offer);
+        System.out.println("The user should pay " + offer.getUserPrice());
+    }
+
+    public double getBalance(){
+        return balance;
     }
 }

@@ -1,10 +1,13 @@
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Ride implements Subject, Notifiable{
     Area source;
     Area destination;
     UserAccount user;
     ArrayList<Offer> offers;
+    Date startTime;
+    Date endTime;
 
     public Ride(Area source, Area destination, UserAccount user) {
         this.source = source;
@@ -12,6 +15,8 @@ public class Ride implements Subject, Notifiable{
         this.user = user;
         source.notifyObservers(this);
         offers = new ArrayList<>();
+        startTime=null;
+        endTime=null;
     }
 
     public void addOffer(Offer offer) {
@@ -33,6 +38,10 @@ public class Ride implements Subject, Notifiable{
 
     public Area getSource() {
         return source;
+    }
+
+    public Area getDestination() {
+        return destination;
     }
 
     public UserAccount getUser() {
@@ -57,5 +66,16 @@ public class Ride implements Subject, Notifiable{
     @Override
     public String toString() {
         return "Ride from " + source + " to " + destination;
+    }
+
+    public void startRide(Offer offer){
+        startTime=new Date();
+        System.out.println("Ride started at "+startTime);
+    }
+
+    public void endRide(Offer offer){
+        endTime=new Date();
+        offer.getDriver().updateBalance(offer.getDriverPrice());
+        System.out.println("Ride ended at "+endTime);
     }
 }

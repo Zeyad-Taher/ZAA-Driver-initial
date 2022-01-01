@@ -50,6 +50,23 @@ public class Admin {
         }
     }
 
+    public void applyDiscount(String areaName, int discount){
+        boolean found=false;
+        for(Area area:Load.areas){
+            System.out.println(area.getName());
+            if(area.getName().equals(areaName)){
+                area.setDiscount(discount);
+                found=true;
+            }
+        }
+        if(found){
+            System.out.println(discount+"% Discount added to "+areaName);
+        }
+        else{
+            System.out.println("Area is not available!");
+        }
+    }
+
     public Connection getSystem(){
         return system;
     }
