@@ -57,6 +57,8 @@ public class Database {
     }
 
     public static String getAddUserSQL(String username,String password,String mobilePhone,String email,Date birthDay){
+        SimpleDateFormat sqlDateFormatter = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
+        String formattedBirthday = sqlDateFormatter.format(birthDay);
         return "INSERT INTO users" +
                 "(username," +
                 "password," +
@@ -67,8 +69,8 @@ public class Database {
                 "drivingLicense," +
                 "is_active," +
                 "is_pending," +
-                "areaSubscriptionID)" +
-                "birthDay" +
+                "areaSubscriptionID," +
+                "birthDay)" +
                 "VALUES" +
                 "('"+ username +"'," +
                 "'"+password+"'," +
@@ -80,7 +82,7 @@ public class Database {
                 "1," +
                 "0," +
                 "null,"+
-                "'"+birthDay+"');";
+                "'"+formattedBirthday+"');";
     }
     public static String getAddFavAreaSQL(String username,Area area){
         return "INSERT OR IGNORE INTO fav_areas" +

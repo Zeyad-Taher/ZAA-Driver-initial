@@ -57,7 +57,7 @@ public class UserAccount extends Account implements Observer {
         {
             discount += 5;
         }
-        if(dayMonthFormatter.format(birthDate).equals(dayMonthFormatter.format(now))){
+        if(dayMonthFormatter.format(birthDate).equals(dayMonth)){
             discount += 10;
         }
         Ride ride = new Ride(source, destination, this, noOfPassengers);
