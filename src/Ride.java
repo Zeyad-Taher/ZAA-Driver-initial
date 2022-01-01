@@ -86,7 +86,7 @@ public class Ride implements Subject, Notifiable{
         return "Ride from " + source + " to " + destination;
     }
 
-    public void startRide(Offer offer){
+    public void startRide(){
         startTime=new Date();
         System.out.println("Ride started at "+startTime);
     }
