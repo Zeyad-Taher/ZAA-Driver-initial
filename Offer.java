@@ -1,16 +1,22 @@
 public class Offer implements Subject, Notifiable {
-    long price;
+    double driverPrice;
+    double userPrice;
     Ride ride;
     DriverAccount driver;
 
-    public Offer(long price, Ride ride, DriverAccount driver) {
-        this.price = price;
+    public Offer(double price, Ride ride, DriverAccount driver) {
+        userPrice = price-(price*ride.getDestination().getDiscount()/100);
+        driverPrice = price;
         this.ride = ride;
         this.driver = driver;
     }
 
-    public long getPrice() {
-        return price;
+    public double getDriverPrice() {
+        return driverPrice;
+    }
+
+    public double getUserPrice() {
+        return userPrice;
     }
 
     public Ride getRide() {
@@ -27,7 +33,7 @@ public class Offer implements Subject, Notifiable {
 
     @Override
     public String toString() {
-        return driver.getUsername() + " offers " + price + "LE";
+        return driver.getUsername() + " offers " + userPrice + " L.E";
     }
 
     @Override

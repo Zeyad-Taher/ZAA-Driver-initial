@@ -110,7 +110,8 @@ public class Database {
 //                "  drivingLicense TEXT NULL," +
 //                "  is_active BOOLEAN," +
 //                "  is_pending BOOLEAN," +
-//                "  areaSubscriptionID TEXT NULL);";
+//                "  areaSubscriptionID TEXT NULL," +
+//                "  balance DOUBLE NOT NULL DEFAULT '0.00');";
 //        String sql = "INSERT INTO users" +
 //                "(username," +
 //                "password," +
@@ -142,7 +143,8 @@ public class Database {
 
         // 4
 //        String sql = "CREATE TABLE areas(" +
-//                "name TEXT NOT NULL PRIMARY KEY)";
+//                "name TEXT NOT NULL PRIMARY KEY,"+
+//                "discount INTEGER NOT NULL DEFAULT '0')";
 
         // 5
 //        String sql = "INSERT INTO areas"+
@@ -168,7 +170,8 @@ public class Database {
 
         // 8
 //        String sql = "CREATE TABLE offer("+
-//                "price REAL NOT NULL,"+
+//                "driverPrice DOUBLE NOT NULL,"+
+//                "userPrice DOUBLE NOT NULL,"+
 //                "ride_caller TEXT NOT NULL,"+
 //                "FOREIGN KEY(ride_caller) REFERENCES rides(caller_username))";
 
@@ -182,17 +185,17 @@ public class Database {
 //                "FOREIGN KEY(driverUsername) REFERENCES users(username))";
 
 //        String sql = "SELECT * FROM users WHERE username in (SELECT driverUsername FROM fav_areas WHERE areaName = 'Haram')";
-        String sql = "SELECT * FROM admins;";
+        String sql = "SELECT name FROM areas;";
 
-//        String sql = "DROP TABLE fav_areas;";
+//        String sql = "DROP TABLE offer;";
 
 //        String sql = "INSERT OR IGNORE INTO fav_areas" +
 //                "(driverUsername, areaName) VALUES ('adel', 'Haram')";
 
         ResultSet rs = stat.executeQuery(sql);
-//        while (rs.next()){
-//            System.out.println(rs.getString("username"));
-//        }
+        while (rs.next()){
+            System.out.println(rs.getString("name"));
+        }
 
         stat.close();
     }

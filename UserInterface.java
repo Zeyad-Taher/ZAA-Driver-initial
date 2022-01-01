@@ -1,13 +1,11 @@
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class UserInterface {
     private static Authentication user,driver;
     private static AdminAuthentication admin;
-    public void chooseEntityMenu() throws IOException, SQLException, ClassNotFoundException {
+    public void chooseEntityMenu() throws SQLException, ClassNotFoundException {
         Scanner read=new Scanner(System.in);
         System.out.println("Please choose from the following menu:");
         System.out.println("\n-----Choosing Entity Menu-----\n"+
@@ -33,7 +31,7 @@ public class UserInterface {
         }
     }
 
-    public void adminMainMenu() throws IOException, SQLException, ClassNotFoundException {
+    public void adminMainMenu() throws SQLException, ClassNotFoundException {
         Scanner read=new Scanner(System.in);
         System.out.println("Please choose from the following menu:");
         System.out.println("\n-----Choosing Admin Main Menu-----\n"+
@@ -58,7 +56,7 @@ public class UserInterface {
         }
     }
 
-    public void afterLoginMenu(Admin admin) throws IOException, SQLException, ClassNotFoundException {
+    public void afterLoginMenu(Admin admin) throws SQLException, ClassNotFoundException {
         Scanner read = new Scanner(System.in);
         System.out.println("Please choose from the following menu:");
         System.out.println("\n-----Choosing from Admin functions-----\n"+
@@ -75,7 +73,7 @@ public class UserInterface {
         else if (choice == 2)
         {
             Scanner ned = new Scanner(System.in);
-            System.out.println("Please enter the username of the account you want to verify:\n");
+            System.out.print("Please enter the username of the account you want to verify: ");
             String driverName = ned.nextLine();
             admin.verifyDriver(driverName);
             afterLoginMenu(admin);
@@ -83,7 +81,7 @@ public class UserInterface {
         else if (choice == 3)
         {
             Scanner ned = new Scanner(System.in);
-            System.out.println("Please enter the username of the account you want to suspend:\n");
+            System.out.print("Please enter the username of the account you want to suspend: ");
             String accountName = ned.nextLine();
             admin.suspendPerson(accountName);
             afterLoginMenu(admin);
@@ -98,7 +96,7 @@ public class UserInterface {
         }
     }
 
-    public void driverMainMenu () throws IOException, SQLException, ClassNotFoundException {
+    public void driverMainMenu () throws SQLException, ClassNotFoundException {
         Scanner read=new Scanner(System.in);
         System.out.println("Please choose from the following menu:");
         System.out.println("\n-----Choosing Driver Main Menu-----\n"+
@@ -110,14 +108,18 @@ public class UserInterface {
         if (choice == 1)
         {
             driver.register();
-//            DriverAccount driverAccount = (DriverAccount) driver.login();
-//            afterLoginMenu(driverAccount);
             driverMainMenu();
         }
         else if (choice == 2)
         {
             DriverAccount driverAccount = (DriverAccount) driver.login();
-            afterLoginMenu(driverAccount);
+            if(driverAccount != null) {
+                afterLoginMenu(driverAccount);
+            }
+            else {
+                System.out.println("Driver not registered or not active");
+                driverMainMenu();
+            }
         }
         else if (choice == 3)
         {
@@ -128,12 +130,13 @@ public class UserInterface {
             System.out.println("Thanks for using our App, We hope to see you soon =)\n");
         }
     }
-    public void afterLoginMenu(DriverAccount driverAccount) throws IOException, SQLException, ClassNotFoundException {
+
+    public void afterLoginMenu(DriverAccount driverAccount) throws SQLException, ClassNotFoundException {
         Scanner read = new Scanner(System.in);
         System.out.println("Please choose from the following menu:");
         System.out.println("\n-----Choosing from Driver functions-----\n"+
                 "1- List Ratings\n" + "2- View average rating\n" + "3- List notifications\n"
-                + "4- Logout\n" + "5- Exit\n");
+                + "4- Add favourite area\n" + "5- Logout\n" + "6- Exit\n");
         int choice = read.nextInt();
         read.nextLine();
 
@@ -158,21 +161,34 @@ public class UserInterface {
             int notificationNumber = read.nextInt();
             read.nextLine();
             Ride ride = (Ride) driverAccount.getNotifications().get(notificationNumber - 1).getPayload();
+            System.out.print("Enter your estimated price: ");
             int price = read.nextInt();
             read.nextLine();
             driverAccount.makeOffer(price, ride);
             afterLoginMenu(driverAccount);
         }
-        else if (choice == 4)
+        else if (choice == 4) {
+            System.out.print("Enter area's name: ");
+            String areaName = read.nextLine();
+            Area area = Load.findArea(areaName);
+            if(area != null) {
+                driverAccount.addFavArea(area);
+            }
+            else {
+                System.out.println("Error: area not supported yet");
+            }
+            afterLoginMenu(driverAccount);
+        }
+        else if (choice == 5)
         {
             driverMainMenu();
         }
-        else if (choice == 5)
+        else if (choice == 6)
         {
             System.out.println("Thanks for using our App, We hope to see you soon =)\n");
         }
     }
-    public void userMainMenu () throws IOException, SQLException, ClassNotFoundException {
+    public void userMainMenu () throws SQLException, ClassNotFoundException {
         Scanner read=new Scanner(System.in);
         System.out.println("Please choose from the following menu:");
         System.out.println("\n-----Choosing User Main Menu-----\n"+
@@ -184,14 +200,18 @@ public class UserInterface {
         if (choice == 1)
         {
             user.register();
-//            UserAccount userAccount = (UserAccount) user.login();
-//            afterLoginMenu(userAccount);
             userMainMenu();
         }
         else if (choice == 2)
         {
             UserAccount userAccount = (UserAccount) user.login();
-            afterLoginMenu(userAccount);
+            if(userAccount != null) {
+                afterLoginMenu(userAccount);
+            }
+            else {
+                userMainMenu();
+            }
+
         }
         else if (choice == 3)
         {
@@ -202,12 +222,12 @@ public class UserInterface {
             System.out.println("Thanks for using our App, We hope to see you soon =)\n");
         }
     }
-    public void afterLoginMenu(UserAccount userAccount) throws IOException, SQLException, ClassNotFoundException {
+    public void afterLoginMenu(UserAccount userAccount) throws SQLException, ClassNotFoundException {
         Scanner read = new Scanner(System.in);
         System.out.println("Please choose from the following menu:");
         System.out.println("\n-----Choosing from User functions-----\n" +
-                "1- Show areas\n" + "2- Request ride\n" + "3- View offers\n" + "4- Accept offer\n" + "5- Rate driver\n"
-                + "6- Logout\n" + "7- Exit\n");
+                "1- Show areas\n" + "2- Request ride\n" + "3- View offers & Accept\n" + "4- Rate driver\n"
+                + "5- Logout\n" + "6- Exit\n");
         int choice = read.nextInt();
         read.nextLine();
 
@@ -215,6 +235,7 @@ public class UserInterface {
             for(Area area : Load.areas) {
                 System.out.print(area + " - ");
             }
+            System.out.println();
             afterLoginMenu(userAccount);
         }
         else if (choice == 2) {
@@ -224,8 +245,11 @@ public class UserInterface {
             System.out.print("Enter your destination area's name: ");
             String destinationName = read.nextLine();
             Area destinationArea = Load.findArea(destinationName);
+            System.out.print("Enter the number of passengers including you: ");
+            int noOfPassengers;
+            noOfPassengers = read.nextInt();
             if(sourceArea != null && destinationArea != null) {
-                userAccount.requestRide(sourceArea, destinationArea);
+                userAccount.requestRide(sourceArea, destinationArea, noOfPassengers);
             }
             else {
                 System.out.println("Areas entered don't seem to be supported yet");
@@ -233,15 +257,19 @@ public class UserInterface {
             afterLoginMenu(userAccount);
         }
         else if (choice == 3) {
+            int count = 1;
             for (Notification notification : userAccount.notifications) {
-                System.out.println(notification);
+                System.out.println(count + "- " +notification);
             }
+
+            System.out.print("Enter the number of the offer you want to accept: ");
+            int cho = read.nextInt();
+            Offer offer = (Offer) userAccount.getNotifications().get(cho-1).getPayload();
+            userAccount.acceptOffer(offer);
             afterLoginMenu(userAccount);
-        }
-        else if (choice == 4) {
 
         }
-        else if (choice == 5) {
+        else if (choice == 4) {
             System.out.print("Enter driver's username: ");
             String driverUsername = read.nextLine();
             DriverAccount driver = Load.findActiveDriver(driverUsername);
@@ -253,10 +281,10 @@ public class UserInterface {
             }
             afterLoginMenu(userAccount);
         }
-        else if (choice == 6){
+        else if (choice == 5) {
             userMainMenu();
         }
-        else if (choice == 7) {
+        else if (choice == 6){
             System.out.println("Thanks for using our App, We hope to see you soon =)\n");
         }
     }
