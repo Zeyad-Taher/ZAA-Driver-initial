@@ -230,6 +230,7 @@ public class Database {
 //        SimpleDateFormat dayMonth = new SimpleDateFormat("dd/MM");
         while (rs.next()){
             System.out.println(rs.getString("username"));
+            System.out.println(rs.getString("password"));
         }
 
         stat.close();

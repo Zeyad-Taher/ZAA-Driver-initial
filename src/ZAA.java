@@ -8,7 +8,7 @@ public class ZAA {
     public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException {
 //        System.out.println("This is a static test case, instructions will be written before executing them (instructions start with '**':-");
 //
-//        Load.loadInit();
+        Load.loadInit();
 //        Scanner read=new Scanner(System.in);
 //
 //        user=new UserAuthentication();
