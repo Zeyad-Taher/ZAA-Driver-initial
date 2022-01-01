@@ -1,5 +1,6 @@
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -8,8 +9,9 @@ import java.util.Scanner;
 public class UserAccount extends Account implements Observer {
     private boolean firstRide;
     private int discount;
+    private Date birthDate;
 
-    public UserAccount(String username,String password,String mobilePhone,String email) throws SQLException, ClassNotFoundException {
+    public UserAccount(String username,String password,String mobilePhone,String email,Date birthDate) throws SQLException, ClassNotFoundException {
         super();
         setUsername(username);
         setPassword(password);
@@ -18,6 +20,7 @@ public class UserAccount extends Account implements Observer {
         active = true;
         firstRide = true;
         discount = 0;
+        this.birthDate=birthDate;
     }
 
     public boolean getIsFirstRide() {
@@ -38,6 +41,9 @@ public class UserAccount extends Account implements Observer {
 
     public Ride requestRide(Area source, Area destination, int noOfPassengers) {
         discount = 0;
+        Date now = new Date();
+        SimpleDateFormat dayMonthFormatter = new SimpleDateFormat("MM/dd");
+        String dayMonth = dayMonthFormatter.format(now);
         if (this.firstRide)
         {
             discount += 10;
@@ -50,6 +56,9 @@ public class UserAccount extends Account implements Observer {
         if (Database.checkIfHoliday())
         {
             discount += 5;
+        }
+        if(dayMonthFormatter.format(birthDate).equals(dayMonthFormatter.format(now))){
+            discount += 10;
         }
         Ride ride = new Ride(source, destination, this, noOfPassengers);
         return ride;
@@ -76,5 +85,6 @@ public class UserAccount extends Account implements Observer {
         rating.setRate(rate);
         rating.setUsername(this.getUsername());
         driver.insertAndUpdateAverageRating(rating);
+
     }
 }

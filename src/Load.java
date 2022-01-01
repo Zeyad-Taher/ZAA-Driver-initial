@@ -95,7 +95,7 @@ public class Load {
             String sql = "SELECT * FROM users WHERE is_driver = 0";
             ResultSet rs = stat.executeQuery(sql);
             while (rs.next()){
-                users.add(new UserAccount(rs.getString("username"), rs.getString("password"), rs.getString("mobile_number"), rs.getString("email")));
+                users.add(new UserAccount(rs.getString("username"), rs.getString("password"), rs.getString("mobile_number"), rs.getString("email"),rs.getDate("birthDay")));
             }
         } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();

@@ -2,6 +2,9 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 public class UserAuthentication implements Authentication{
@@ -47,11 +50,19 @@ public class UserAuthentication implements Authentication{
         String mobilePhone=regRead.nextLine();
         System.out.print("Email: ");
         String email=regRead.nextLine();
+        System.out.print("Birthday (mm-dd): ");
+        String birthday=regRead.nextLine();
+        Date birthDate=null;
+        try {
+            birthDate=new SimpleDateFormat("MM-dd").parse(birthday);
+        } catch (ParseException e) {
+            System.out.println("Error: wrong birthday format!");
+        }
         try {
             Statement stat = system.createStatement();
-            String sql = Database.getAddUserSQL(username,password,mobilePhone,email);
+            String sql = Database.getAddUserSQL(username,password,mobilePhone,email,birthDate);
             stat.executeUpdate(sql);
-            Load.users.add(new UserAccount(username, password, mobilePhone, email));
+            Load.users.add(new UserAccount(username, password, mobilePhone, email,birthDate));
             System.out.println("User account created successfully");
         } catch (SQLException | ClassNotFoundException throwables) {
             System.out.println("Username already registered");
