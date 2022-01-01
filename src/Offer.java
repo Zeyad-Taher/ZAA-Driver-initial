@@ -28,6 +28,7 @@ public class Offer implements Subject, Notifiable {
     }
 
     public void accept(){
+        ride.addEvent(new RideEvent(ride.getUser().getUsername()));
         notifyObservers(this);
     }
 

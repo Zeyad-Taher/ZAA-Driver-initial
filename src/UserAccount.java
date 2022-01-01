@@ -13,8 +13,8 @@ public class UserAccount extends Account implements Observer {
         active = true;
     }
 
-    public Ride requestRide(Area source, Area destination) {
-        Ride ride = new Ride(source, destination, this);
+    public Ride requestRide(Area source, Area destination, int noOfPassengers) {
+        Ride ride = new Ride(source, destination, this, noOfPassengers);
         return ride;
     }
 

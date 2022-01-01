@@ -226,8 +226,8 @@ public class UserInterface {
         Scanner read = new Scanner(System.in);
         System.out.println("Please choose from the following menu:");
         System.out.println("\n-----Choosing from User functions-----\n" +
-                "1- Show areas\n" + "2- Request ride\n" + "3- View offers\n" + "4- Accept offer\n" + "5- Rate driver\n"
-                + "6- Logout\n" + "7- Exit\n");
+                "1- Show areas\n" + "2- Request ride\n" + "3- View offers & Accept\n" + "4- Rate driver\n"
+                + "5- Logout\n" + "6- Exit\n");
         int choice = read.nextInt();
         read.nextLine();
 
@@ -245,8 +245,11 @@ public class UserInterface {
             System.out.print("Enter your destination area's name: ");
             String destinationName = read.nextLine();
             Area destinationArea = Load.findArea(destinationName);
+            System.out.print("Enter the number of passengers including you: ");
+            int noOfPassengers;
+            noOfPassengers = read.nextInt();
             if(sourceArea != null && destinationArea != null) {
-                userAccount.requestRide(sourceArea, destinationArea);
+                userAccount.requestRide(sourceArea, destinationArea, noOfPassengers);
             }
             else {
                 System.out.println("Areas entered don't seem to be supported yet");
@@ -254,15 +257,20 @@ public class UserInterface {
             afterLoginMenu(userAccount);
         }
         else if (choice == 3) {
+            int count = 1;
             for (Notification notification : userAccount.notifications) {
-                System.out.println(notification);
+                System.out.println(count + "- " +notification);
             }
+
+            System.out.print("Enter the number of the offer you want to accept: ");
+            int cho = read.nextInt();
+            Offer offer = (Offer) userAccount.getNotifications().get(cho-1).getPayload();
+            userAccount.acceptOffer(offer);
+            afterLoginMenu(userAccount);
             afterLoginMenu(userAccount);
         }
-        else if (choice == 4) {
 
-        }
-        else if (choice == 5) {
+        else if (choice == 4) {
             System.out.print("Enter driver's username: ");
             String driverUsername = read.nextLine();
             DriverAccount driver = Load.findActiveDriver(driverUsername);
@@ -274,10 +282,10 @@ public class UserInterface {
             }
             afterLoginMenu(userAccount);
         }
-        else if (choice == 6){
+        else if (choice == 5){
             userMainMenu();
         }
-        else if (choice == 7) {
+        else if (choice == 6) {
             System.out.println("Thanks for using our App, We hope to see you soon =)\n");
         }
     }

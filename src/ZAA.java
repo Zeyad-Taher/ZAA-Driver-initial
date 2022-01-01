@@ -50,7 +50,7 @@ public class ZAA {
         System.out.println("**Setting haram as a fav area for this driver");
         driverAcc.addFavArea(haram);
         System.out.println("**User requesting a ride to haram");
-        Ride userRide = userAcc.requestRide(haram, dokki);
+        Ride userRide = userAcc.requestRide(haram, dokki, 1);
         System.out.println("**Driver making an offer to that ride");
         Offer driverOffer = driverAcc.makeOffer(25, userRide);
         System.out.println(dokki.getDiscount());

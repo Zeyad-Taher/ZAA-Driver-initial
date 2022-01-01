@@ -11,6 +11,8 @@ public class DriverAccount extends Account implements Observer {
     private ArrayList<Area> favAreas;
     private double averageRating;
     private double balance;
+    private Ride currentRide;
+    private boolean isAvailable;
 
     public DriverAccount(String username,String password,String mobilePhone,String email,String nationalID,String drivingLicense) throws SQLException, ClassNotFoundException {
         super();
@@ -24,6 +26,24 @@ public class DriverAccount extends Account implements Observer {
         setType(this);
         favAreas = new ArrayList<>();
         averageRating = calculateAverageRating();
+        isAvailable = true;
+        currentRide = null;
+    }
+
+    public Ride getCurrentRide() {
+        return currentRide;
+    }
+
+    public void setCurrentRide(Ride currentRide) {
+        this.currentRide = currentRide;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
     }
 
     public void setNationalID(String nationalID){
@@ -71,7 +91,12 @@ public class DriverAccount extends Account implements Observer {
 
     @Override
     public void update(Object object) {
-        if(object instanceof Ride){
+        if (object instanceof Ride && this.isAvailable && currentRide == null) {
+            Ride r = (Ride) object;
+            Date date = new Date();
+            Timestamp now = new Timestamp(date.getTime());
+            addNotification(new Notification("new ride from " + r.getSource().getName(), now, (Notifiable) r));
+        } else if (object instanceof Ride && this.isAvailable && currentRide.source == ((Ride) object).source && currentRide.destination == ((Ride) object).destination && currentRide.numberOfEmptySeats >= ((Ride) object).numberOfPassengers) {
             Ride r = (Ride) object;
             Date date = new Date();
             Timestamp now = new Timestamp(date.getTime());
@@ -140,11 +165,14 @@ public class DriverAccount extends Account implements Observer {
 
     public void startTrip(Offer offer){
         offer.getRide().startRide(offer);
+        isAvailable = false;
     }
 
     public void endTrip(Offer offer){
         offer.getRide().endRide(offer);
         System.out.println("The user should pay " + offer.getUserPrice());
+        isAvailable = true;
+        currentRide = null;
     }
 
     public double getBalance(){

@@ -6,23 +6,41 @@ public class Ride implements Subject, Notifiable{
     Area destination;
     UserAccount user;
     ArrayList<Offer> offers;
+    ArrayList<RideEvent> events;
     Date startTime;
     Date endTime;
+    int numberOfPassengers;
+    int numberOfEmptySeats;
 
-    public Ride(Area source, Area destination, UserAccount user) {
+    public Ride(Area source, Area destination, UserAccount user, int numberOfPassengers) {
         this.source = source;
         this.destination = destination;
         this.user = user;
         source.notifyObservers(this);
         offers = new ArrayList<>();
+        events = new ArrayList<>();
+        Load.rides.add(this);
         startTime=null;
         endTime=null;
+        this.numberOfPassengers = numberOfPassengers;
+        this.numberOfEmptySeats = numberOfPassengers-1;
     }
 
     public void addOffer(Offer offer) {
         offers.add(offer);
         notifyObservers(offer);
     }
+
+    public void showEvents() {
+        for (RideEvent event : events) {
+            System.out.println(event);
+        }
+    }
+
+    public void addEvent(RideEvent event) {
+        events.add(event);
+    }
+
 
     public void setOffers(ArrayList<Offer> offers) {
         this.offers = offers;

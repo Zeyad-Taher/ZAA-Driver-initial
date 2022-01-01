@@ -8,6 +8,7 @@ public class Load {
     public static ArrayList<DriverAccount> pendingDrivers = new ArrayList<>();
     public static ArrayList<UserAccount> users = new ArrayList<>();
     public static ArrayList<Area> areas = new ArrayList<>();
+    public static ArrayList<Ride> rides = new ArrayList<>();
 
     public static void loadInit() {
         loadDrivers();
@@ -25,7 +26,6 @@ public class Load {
                     favAreas.add(findArea(rs.getString("name")));
                 }
                 driver.setFavAreas(favAreas);
-//                System.out.println("Driver username: " + driver.getUsername() + ", areas: " + favAreas);
             } catch (SQLException | ClassNotFoundException throwables) {
                 throwables.printStackTrace();
             }
@@ -39,10 +39,11 @@ public class Load {
                 ResultSet rs = stat.executeQuery(sql);
                 ArrayList<Observer> observers = new ArrayList<>();
                 while (rs.next()) {
+                    System.out.println(rs.getString("username"));
+                    System.out.println(findActiveDriver(rs.getString("username")));
                     observers.add(findActiveDriver(rs.getString("username")));
                 }
                 area.setObservers(observers);
-//                System.out.println("Area name: " + area.getName() + ", drivers: " + observers);
             } catch (SQLException | ClassNotFoundException throwables) {
                 throwables.printStackTrace();
             }

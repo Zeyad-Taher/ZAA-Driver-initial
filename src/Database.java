@@ -185,17 +185,18 @@ public class Database {
 //                "FOREIGN KEY(driverUsername) REFERENCES users(username))";
 
 //        String sql = "SELECT * FROM users WHERE username in (SELECT driverUsername FROM fav_areas WHERE areaName = 'Haram')";
-        String sql = "SELECT name FROM areas;";
+        String sql = "SELECT * FROM fav_areas;";
 
-//        String sql = "DROP TABLE offer;";
+//        String sql = "DROP TABLE fav_areas;";
 
 //        String sql = "INSERT OR IGNORE INTO fav_areas" +
 //                "(driverUsername, areaName) VALUES ('adel', 'Haram')";
 
         ResultSet rs = stat.executeQuery(sql);
-        while (rs.next()){
-            System.out.println(rs.getString("name"));
-        }
+//        while (rs.next()){
+//            System.out.println(rs.getString("driverUsername"));
+//            System.out.println(rs.getString("areaName"));
+//        }
 
         stat.close();
     }
