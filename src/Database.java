@@ -135,7 +135,7 @@ public class Database {
 //                "  is_pending BOOLEAN," +
 //                "  areaSubscriptionID TEXT NULL," +
 //                "  balance DOUBLE NOT NULL DEFAULT '0.00'," +
-//                "  birthDay DATE NOT NULL );";
+//                "  birthDay DATE NULL );";
 //        String sql = "INSERT INTO users" +
 //                "(username," +
 //                "password," +
