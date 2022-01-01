@@ -1,4 +1,6 @@
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Database {
     private static Database uniqueInstance = null;
@@ -96,6 +98,23 @@ public class Database {
         return "SELECT rate FROM ratings WHERE driverUsername = '"+username+"'";
     }
 
+    public static boolean checkIfHoliday() {
+        Date now = new Date();
+        SimpleDateFormat dayMonthFormatter = new SimpleDateFormat("dd/MM");
+        String dayMonth = dayMonthFormatter.format(now);
+        String sql = "SELECT * FROM public_holidays WHERE strftime('%m/%d', date) = '"+dayMonth+"'";
+        try {
+            ResultSet rs = con.createStatement().executeQuery(sql);
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
+        return false;
+    }
+
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         Connection con = Database.getInstance();
         Statement stat = con.createStatement();
@@ -184,19 +203,29 @@ public class Database {
 //                "FOREIGN KEY(userUsername) REFERENCES users(username),"+
 //                "FOREIGN KEY(driverUsername) REFERENCES users(username))";
 
-//        String sql = "SELECT * FROM users WHERE username in (SELECT driverUsername FROM fav_areas WHERE areaName = 'Haram')";
-        String sql = "SELECT * FROM fav_areas;";
+        //10
+//        String sql = "CREATE TABLE public_holidays(" +
+//                "date DATE NOT NULL PRIMARY KEY," +
+//                "holiday_name TEXT NULL);";
 
-//        String sql = "DROP TABLE fav_areas;";
+        //11
+//        String sql = "INSERT INTO public_holidays" +
+//                "(date, holiday_name)" +
+//                "VALUES ('2022-01-07 13:57:40', 'New Year');";
+
+//        String sql = "SELECT * FROM users WHERE username in (SELECT driverUsername FROM fav_areas WHERE areaName = 'Haram')";
+        String sql = "SELECT * FROM public_holidays;";
+
+//        String sql = "DROP TABLE public_holidays;";
 
 //        String sql = "INSERT OR IGNORE INTO fav_areas" +
 //                "(driverUsername, areaName) VALUES ('adel', 'Haram')";
 
         ResultSet rs = stat.executeQuery(sql);
-//        while (rs.next()){
-//            System.out.println(rs.getString("driverUsername"));
-//            System.out.println(rs.getString("areaName"));
-//        }
+//        SimpleDateFormat dayMonth = new SimpleDateFormat("dd/MM");
+        while (rs.next()){
+            System.out.println(rs.getString("holiday_name"));
+        }
 
         stat.close();
     }

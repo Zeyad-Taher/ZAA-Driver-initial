@@ -47,6 +47,10 @@ public class UserAccount extends Account implements Observer {
         {
             discount+=5;
         }
+        if (Database.checkIfHoliday())
+        {
+            discount += 5;
+        }
         Ride ride = new Ride(source, destination, this, noOfPassengers);
         return ride;
     }
