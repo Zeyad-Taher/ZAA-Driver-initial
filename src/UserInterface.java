@@ -287,6 +287,7 @@ public class UserInterface {
         }
         else if (choice == 6) {
             System.out.println("Thanks for using our App, We hope to see you soon =)\n");
+            System.out.println("alkjdf");
         }
     }
 }

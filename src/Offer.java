@@ -3,9 +3,11 @@ public class Offer implements Subject, Notifiable {
     double userPrice;
     Ride ride;
     DriverAccount driver;
+    int totalDiscount;
 
     public Offer(double price, Ride ride, DriverAccount driver) {
-        userPrice = price-(price*ride.getDestination().getDiscount()/100);
+        totalDiscount = ride.getDestination().getDiscount() + ride.getUser().getDiscount();
+        userPrice = price-(price*totalDiscount/100);
         driverPrice = price;
         this.ride = ride;
         this.driver = driver;

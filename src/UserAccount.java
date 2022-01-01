@@ -3,7 +3,12 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Scanner;
 
+
+
 public class UserAccount extends Account implements Observer {
+    private boolean firstRide;
+    private int discount;
+
     public UserAccount(String username,String password,String mobilePhone,String email) throws SQLException, ClassNotFoundException {
         super();
         setUsername(username);
@@ -11,9 +16,37 @@ public class UserAccount extends Account implements Observer {
         setMobilePhone(mobilePhone);
         setEmail(email);
         active = true;
+        firstRide = true;
+        discount = 0;
+    }
+
+    public boolean getIsFirstRide() {
+        return firstRide;
+    }
+
+    public void setIsFirstRide(boolean firstRide) {
+        this.firstRide = firstRide;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
     }
 
     public Ride requestRide(Area source, Area destination, int noOfPassengers) {
+        discount = 0;
+        if (this.firstRide)
+        {
+            discount += 10;
+            firstRide = false;
+        }
+        if (noOfPassengers >= 2)
+        {
+            discount+=5;
+        }
         Ride ride = new Ride(source, destination, this, noOfPassengers);
         return ride;
     }
